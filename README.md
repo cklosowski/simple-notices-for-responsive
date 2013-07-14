@@ -3,6 +3,8 @@ Simple Notices for Responsive
 
 This is a plugin to enable simple notices between the menu and content of the Responsive Theme for WordPress
 
+[Download the Theme](http://wordpress.org/themes/responsive)
+
 Screenshots
 =========================
 ![Admin Settings](https://dl.dropboxusercontent.com/u/8019372/plugins/snfr/admin-settings.png "Admin Settings (for now)")
