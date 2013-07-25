@@ -5,12 +5,6 @@ This is a plugin to enable simple notices between the menu and content of the Re
 
 [Download the Theme](http://wordpress.org/themes/responsive)
 
-Screenshots
-=========================
-![Admin Settings](https://dl.dropboxusercontent.com/u/8019372/plugins/snfr/admin-settings.png "Admin Settings (for now)")
-
-![Front End Display](https://dl.dropboxusercontent.com/u/8019372/plugins/snfr/front-end.png "Displaying the banners")
-
 Changelog
 =========================
 ### 1.1 ###
@@ -18,6 +12,12 @@ Changelog
 * New: Added color picker to the background and border colors with a default color
 * New: Changing the text or colors will live update the preview at the bottom of the settings page
 * New: Any changes will prompt you with a notice stating you have unsaved changes
+
+Screenshots
+=========================
+![Admin Settings](https://dl.dropboxusercontent.com/u/8019372/plugins/snfr/admin-settings.png "Admin Settings (for now)")
+
+![Front End Display](https://dl.dropboxusercontent.com/u/8019372/plugins/snfr/front-end.png "Displaying the banners")
 
 Wishlist
 =========================
