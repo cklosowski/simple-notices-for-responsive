@@ -3,7 +3,7 @@
 Plugin Name: Simple Notices for Responsive
 Plugin URL: http://wp-push.com
 Description: Add a notice to the responsive theme, between the nav and content
-Version: 1.0
+Version: 1.1
 Author: Chris Klosowski
 Author URI: https://wp-push.com
 Contributors: cklosows
@@ -13,6 +13,7 @@ Contributors: cklosows
 if ( is_admin() ) {
 	add_action( 'admin_init', 'wppush_notices_register_settings' );
 	add_action( 'admin_menu', 'wppush_notices_settings_menu' );
+	add_action( 'admin_enqueue_scripts', 'wppush_enqueue_color_picker' );
 } else {
 	add_action( 'responsive_header_end', 'wppush_notices_add_notices' );
 }
@@ -23,21 +24,21 @@ function wppush_notices_register_settings() {
 }
 
 function wppush_notices_settings_menu() {
-	add_options_page( 'Simple Notices', 'Simple Notices', 'administrator', 'simple-notices-responsive', 'wppush_simple_notice_admin' );
+	add_theme_page( 'Simple Notices', 'Simple Notices', 'administrator', 'simple-notices-responsive', 'wppush_simple_notice_admin' );
 }
 
 function wppush_simple_notice_admin() {
 	$current_settings = get_option( 'wppush_notices_settings' );
 	?>
 	<div class="wrap">
-	<div id="icon-options-general" class="icon32"></div><h2>Simple Notices for Responsive</h2>
+	<div id="icon-themes" class="icon32"></div><h2>Simple Notices for Responsive</h2>
 	<form method="post" action="options.php">
 	  <?php wp_nonce_field( 'wppush-notices-settings' ); ?>
 	  <table class="form-table">
 		<tr valign="top">
 		  <th scope="row">Display?</th>
 		  <td>
-		  	<select name="wppush_notices_settings[enabled]">
+		  	<select id="onoffswitch" name="wppush_notices_settings[enabled]">
 		  		<option value="on" <?php selected( $current_settings['enabled'], 'on' ); ?>>On</option>
 		  		<option value="off" <?php selected( $current_settings['enabled'], 'off' ); ?>>Off</option>
 		  	</select>
@@ -47,21 +48,21 @@ function wppush_simple_notice_admin() {
 		<tr valign="top">
 		  <th scope="row">Message:</th>
 		  <td>
-		  	<textarea cols="100" rows="5" name="wppush_notices_settings[message]"><?php echo ( isset( $current_settings['message'] ) ) ? $current_settings['message'] : ''; ?></textarea>
+		  	<textarea cols="100" id="message" rows="5" name="wppush_notices_settings[message]"><?php echo ( isset( $current_settings['message'] ) ) ? $current_settings['message'] : ''; ?></textarea>
 		  </td>
 		</tr>
 
 		<tr valign="top">
 		  <th scope="row">Border Color:</th>
-		  <td>
-			<input type="text" size="25" name="wppush_notices_settings[border_color]" placeholder="Border Color" value="<?php echo ( isset( $current_settings['border_color'] ) ) ? $current_settings['border_color'] : ''; ?>" />
+		  <td id="border-color-wrapper">
+		  	<input type="text" value="<?php echo $current_settings['border_color']; ?>" id="border-color" value="" name="wppush_notices_settings[border_color]" class="my-color-field" data-default-color="#d4af37" />
 		  </td>
 		</tr>
 
 		<tr valign="top">
 		  <th scope="row">Background Color:</th>
-		  <td>
-			<input type="text" size="25" name="wppush_notices_settings[bg_color]" placeholder="Background Color" value="<?php echo ( isset( $current_settings['bg_color'] ) ) ? $current_settings['bg_color'] : ''; ?>" />
+		  <td id="bg-color-wrapper">
+		  	<input type="text" value="<?php echo $current_settings['bg_color']; ?>" id="background-color" value="" name="wppush_notices_settings[bg_color]" class="my-color-field" data-default-color="#fcf4cb" />
 		  </td>
 		</tr>
 
@@ -75,15 +76,21 @@ function wppush_simple_notice_admin() {
 	  <?php settings_fields( 'wppush-notices-settings' ); ?>
 	</form>
 
-	<?php if ( isset( $current_settings['message'] ) ) { ?>
-	<h3>Preview:</h3>
-	<div style="color: #333; font-size: 13px; margin: 15px auto 0 auto; width: 95%; background-color: <?php echo $current_settings['bg_color']; ?>; border: 1px solid <?php echo $current_settings['border_color']; ?>; height: auto; border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; padding: 10px 15px;">
-		<span><?php echo $current_settings['message']; ?></span>
+	<div id="preview-wrapper" <?php echo ( !isset( $current_settings['message'] ) || empty( $current_settings['message'] ) ) ? 'style="display: none"' : ''; ?>>
+		<h3>Preview:</h3>
+		<div id="preview-message" style="color: #333; font-size: 13px; margin: 15px auto 0 auto; width: 95%; background-color: <?php echo $current_settings['bg_color']; ?>; border: 1px solid <?php echo $current_settings['border_color']; ?>; height: auto; border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; padding: 10px 15px;">
+			<span id="message-text"><?php echo $current_settings['message']; ?></span>
+		</div>
 	</div>
-	<?php } ?>
 
 	</div>
 	<?php
+}
+
+function wppush_enqueue_color_picker( $hook_suffix ) {
+	// first check that $hook_suffix is appropriate for your admin page
+	wp_enqueue_style( 'wp-color-picker' );
+	wp_enqueue_script( 'my-script-handle', plugins_url('wppush-simple-notices-script.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
 }
 
 function wppush_notices_add_notices() {
