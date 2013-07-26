@@ -7,6 +7,10 @@ This is a plugin to enable simple notices between the menu and content of the Re
 
 Changelog
 =========================
+### 1.1.1 ###
+* New: Upon activation sets defaults to Off, Test Message, and default colors.
+* New: Added uninstall.php to remove options when uninstall is run.
+
 ### 1.1 ###
 * Update: The settings page is now localted in the (more appropriate) Appearance Menu
 * New: Added color picker to the background and border colors with a default color

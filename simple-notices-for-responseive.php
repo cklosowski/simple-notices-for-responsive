@@ -3,7 +3,7 @@
 Plugin Name: Simple Notices for Responsive
 Plugin URL: http://wp-push.com
 Description: Add a notice to the responsive theme, between the nav and content
-Version: 1.1
+Version: 1.1.1
 Author: Chris Klosowski
 Author URI: https://wp-push.com
 Contributors: cklosows
@@ -14,6 +14,7 @@ if ( is_admin() ) {
 	add_action( 'admin_init', 'wppush_notices_register_settings' );
 	add_action( 'admin_menu', 'wppush_notices_settings_menu' );
 	add_action( 'admin_enqueue_scripts', 'wppush_enqueue_color_picker' );
+	register_activation_hook( __FILE__, 'simple_notices_activation' );
 } else {
 	add_action( 'responsive_header_end', 'wppush_notices_add_notices' );
 }
@@ -102,4 +103,15 @@ function wppush_notices_add_notices() {
 		</div>
 		<?php
 	}
+}
+
+function simple_notices_activation() {
+	$default_settings = array(
+						'enabled' 		=> 'off',
+						'message' 		=> 'This is a test Message',
+						'border_color'	=> '#d4af37',
+						'bg_color'		=> '#fcf4cb'
+						);
+
+	update_option( 'wppush_notices_settings', $default_settings );
 }
