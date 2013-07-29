@@ -15,6 +15,7 @@ if ( is_admin() ) {
 	add_action( 'admin_menu', 'snfr_notices_settings_menu' );
 	add_action( 'admin_print_scripts', 'snfr_admin_print_scripts' );
 	add_action( 'admin_enqueue_scripts', 'snfr_admin_enqueue_scripts' );
+	register_activation_hook( __FILE__, 'snfr_activation' );
 } else {
 	add_action( 'init', 'snfr_enqueue_styles_and_scripts' );
 	add_action( 'responsive_header_end', 'snfr_notices_add_notices' );
@@ -152,4 +153,15 @@ function snfr_notices_add_notices() {
 		</div>
 		<?php
 	}
+}
+
+function snfr_activation() {
+	$default_settings = array(
+						'enabled' 		=> 'off',
+						'message' 		=> 'This is a test Message',
+						'border_color'	=> '#d4af37',
+						'bg_color'		=> '#fcf4cb'
+						);
+
+	update_option( 'wppush_notices_settings', $default_settings );
 }

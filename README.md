@@ -11,9 +11,14 @@ Changelog
 * Update: References to WPPush are being removed
 * Update: Ready for i18n
 * Update: Moved Styles and Scripts into enqueued styles and scripts.
+* New: Added Uninstall.php
 * New: Added date picker for start and end dates, includes validation of both dates and date range
 * New: Added jQuery Cookie plugin to allow getting/setting cookies
 * New: Added ability for user to close the notice, and have it not show up until the session cookie is deleted
+
+### 1.1.1 ###
+* New: Upon activation sets defaults to Off, Test Message, and default colors.
+* New: Added uninstall.php to remove options when uninstall is run.
 
 ### 1.1 ###
 * Update: The settings page is now located in the (more appropriate) Appearance Menu
