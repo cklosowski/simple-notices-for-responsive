@@ -1,0 +1,18 @@
+#snfr-notice, #preview-message {
+	color: #333;
+	font-size: 13px;
+	margin: 15px auto 0 auto;
+	width: 95%;
+	border: 1px solid;
+	height: auto;
+	border-radius: 8px;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	padding: 10px 15px;
+}
+
+#snfr-close-button {
+	float: right;
+	color: #0066cc;
+	cursor: pointer;
+}
