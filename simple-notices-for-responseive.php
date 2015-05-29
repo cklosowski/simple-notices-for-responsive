@@ -3,7 +3,7 @@
 Plugin Name: Simple Notices for Responsive
 Plugin URL: http://filament-studios.com
 Description: Add a notice to the responsive theme, between the nav and content
-Version: 1.2
+Version: 1.3
 Author: Chris Klosowski
 Author URI: https://filament-studios.com
 Contributors: cklosows
@@ -22,6 +22,7 @@ class Simple_Notices_for_Responsive {
 	private function __construct() {
 
 		$this->setup_constants();
+		$this->includes();
 		$this->actions();
 
 	}
@@ -37,8 +38,15 @@ class Simple_Notices_for_Responsive {
 	}
 
 	private function setup_constants() {
-		define( 'SNFR_VERSION', '1.2' );
+		define( 'SNFR_VERSION', '1.3' );
+		define( 'SNFR_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 		define( 'SNFR_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+		define( 'SNFR_PLUGIN_NAME', 'Simple Notices for Responsive' );
+		define( 'SNFR_STORE_URL', 'https://filament-studios.com' );
+	}
+
+	private function includes() {
+		require SNFR_PLUGIN_DIR . 'includes/EDD_SL_Plugin_Updater.php';
 	}
 
 	private function actions() {
@@ -47,6 +55,10 @@ class Simple_Notices_for_Responsive {
 			add_action( 'admin_menu', array( $this, 'settings_menu' ) );
 			add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
+			add_action( 'admin_init', array( $this, 'plugin_updater' ) );
+			add_action( 'admin_init', array( $this, 'activate_license' ) );
+			add_action( 'admin_init', array( $this, 'deactivate_license' ) );
 		}
 
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
@@ -55,12 +67,13 @@ class Simple_Notices_for_Responsive {
 	}
 
 	public function load_textdomain() {
-
+		load_plugin_textdomain( 'snfr', false, '/simple-notices-for-responsive/languages/' );
 	}
 
 	public function register_settings() {
 		// Whitelist options
 		register_setting( 'snfr-notices-settings', 'simple_notices_settings' );
+		register_setting( 'snfr-notices-settings', '_snfr_license_key' );
 	}
 
 	public function settings_menu() {
@@ -72,8 +85,40 @@ class Simple_Notices_for_Responsive {
 		<div class="wrap">
 		<div id="icon-themes" class="icon32"></div><h2><?php _e( 'Simple Notices for Responsive:', 'snfr' ); ?></h2>
 		<form method="post" action="options.php">
-		  <?php wp_nonce_field( 'snfr-notices-settings' ); ?>
-		  <table class="form-table">
+			<?php wp_nonce_field( 'snfr-notices-settings' ); ?>
+			<table class="form-table">
+
+			<?php
+			$license = get_option( '_snfr_license_key' );
+			$status  = get_option( '_snfr_license_key_status' );
+			?>
+			<tr valign="top">
+				<th scope="row" valign="top">
+					<?php _e( 'License Key', 'ppp-txt' ); ?>
+				</th>
+				<td>
+					<input id="snfr_license_key" name="_snfr_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" /><?php if( $status !== false && $status == 'valid' ) { ?>
+					<span style="color:green;">&nbsp;<?php _e( 'active', 'snfr' ); ?></span><?php } ?>
+				</td>
+			</tr>
+
+			<?php if( false !== $license ) { ?>
+				<tr valign="top">
+					<th scope="row" valign="top">
+						<?php _e( 'Activate License', 'ppp-txt' ); ?>
+					</th>
+					<td>
+						<?php if( $status !== false && $status == 'valid' ) { ?>
+							<?php wp_nonce_field( 'snfr_deactivate_nonce', 'snfr_deactivate_nonce' ); ?>
+							<input type="submit" class="button-secondary" name="snfr_license_deactivate" value="<?php _e( 'Deactivate License', 'snfr' ); ?>"/>
+						<?php } else {
+							wp_nonce_field( 'snfr_activate_nonce', 'snfr_activate_nonce' ); ?>
+							<input type="submit" class="button-secondary" name="snfr_license_activate" value="<?php _e( 'Activate License', 'snfr' ); ?>"/>
+						<?php } ?>
+					</td>
+				</tr>
+			<?php } ?>
+
 			<tr valign="top">
 			  <th scope="row"><?php _e( 'Display:', 'snfr' ); ?></th>
 			  <td>
@@ -87,8 +132,8 @@ class Simple_Notices_for_Responsive {
 			</tr>
 
 			<tr valign="top">
-			  <th scope="row"><?php _e( 'Start Date:', 'snfr' ); ?></th>
-			  <td>
+				<th scope="row"><?php _e( 'Start Date:', 'snfr' ); ?></th>
+				<td>
 				<?php
 					$start_date = $this->get_option( 'start_date', '' );
 					$end_date   = $this->get_option( 'end_date', '' );
@@ -98,10 +143,10 @@ class Simple_Notices_for_Responsive {
 			</tr>
 
 			<tr valign="top">
-			  <th scope="row"><?php _e( 'End Date:', 'snfr' ); ?></th>
-			  <td>
-				<input <?php echo ( $enabled != 'range' ) ? 'disabled="disabled"' : ''; ?> type="text" value="<?php echo $end_date; ?>" id="end-date" name="simple_notices_settings[end_date]" class="snfr-date-field" />
-			  </td>
+				<th scope="row"><?php _e( 'End Date:', 'snfr' ); ?></th>
+				<td>
+					<input <?php echo ( $enabled != 'range' ) ? 'disabled="disabled"' : ''; ?> type="text" value="<?php echo $end_date; ?>" id="end-date" name="simple_notices_settings[end_date]" class="snfr-date-field" />
+				</td>
 			</tr>
 
 			<tr valign="top">
@@ -229,6 +274,128 @@ class Simple_Notices_for_Responsive {
 		return $return;
 	}
 
+
+	/**
+	 * Handle Software Licensing
+	 */
+
+	/**
+	 * Sets up the EDD SL Plugin updated class
+	 * @return void
+	 */
+	public function plugin_updater() {
+
+		$license_key = trim( get_option( '_snfr_license_key' ) );
+
+		// setup the updater
+		$edd_updater = new EDD_SL_Plugin_Updater( SNFR_STORE_URL, __FILE__, array(
+				'version'   => SNFR_VERSION,         // current version number
+				'license'   => $license_key,        // license key (used get_option above to retrieve from DB)
+				'item_name' => SNFR_PLUGIN_NAME,     // name of this plugin
+				'author'    => 'Filament Studios'  // author of this plugin
+			)
+		);
+	}
+
+	/**
+	 * Deactivates the license key
+	 * @return void
+	 */
+	public function deactivate_license() {
+		// listen for our activate button to be clicked
+		if( isset( $_POST['snfr_license_deactivate'] ) ) {
+
+			// run a quick security check
+			if( ! check_admin_referer( 'snfr_deactivate_nonce', 'snfr_deactivate_nonce' ) ) {
+				return;
+			}
+			// get out if we didn't click the Activate button
+
+			// retrieve the license from the database
+			$license = trim( get_option( '_snfr_license_key' ) );
+
+
+			// data to send in our API request
+			$api_params = array(
+				'edd_action' => 'deactivate_license',
+				'license'    => $license,
+				'item_name'  => urlencode( SNFR_PLUGIN_NAME ) // the name of our product in EDD
+			);
+
+			// Call the custom API.
+			$response = wp_remote_get( add_query_arg( $api_params, SNFR_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
+
+			// make sure the response came back okay
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+
+			// decode the license data
+			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+
+			// $license_data->license will be either "deactivated" or "failed"
+			if( $license_data->license == 'deactivated' ) {
+				delete_option( '_snfr_license_key_status' );
+			}
+
+		}
+	}
+
+	/**
+	 * Activates the license key provided
+	 * @return void
+	 */
+	public function activate_license() {
+		// listen for our activate button to be clicked
+		if( isset( $_POST['snfr_license_activate'] ) ) {
+
+			// run a quick security check
+		 	if( ! check_admin_referer( 'snfr_activate_nonce', 'snfr_activate_nonce' ) ) {
+		 		return;
+		 	}
+		 	// get out if we didn't click the Activate button
+
+			// retrieve the license from the database
+			$license = trim( get_option( '_snfr_license_key' ) );
+
+
+			// data to send in our API request
+			$api_params = array(
+				'edd_action'=> 'activate_license',
+				'license'   => $license,
+				'item_name' => urlencode( SNFR_PLUGIN_NAME ) // the name of our product in EDD
+			);
+
+			// Call the custom API.
+			$response = wp_remote_get( add_query_arg( $api_params, SNFR_STORE_URL ), array( 'timeout' => 15, 'sslverify' => false ) );
+
+			// make sure the response came back okay
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+
+			// decode the license data
+			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+
+			// $license_data->license will be either "active" or "inactive"
+
+			update_option( '_snfr_license_key_status', $license_data->license );
+
+		}
+	}
+
+	/**
+	 * Sanatize the liscense key being provided
+	 * @param  string $new The License key provided
+	 * @return string      Sanitized license key
+	 */
+	public function snfr_sanitize_license( $new ) {
+		$old = get_option( '_snfr_license_key' );
+		if( $old && $old != $new ) {
+			delete_option( '_snfr_license_key_status' ); // new license has been entered, so must reactivate
+		}
+		return $new;
+	}
 }
 
 

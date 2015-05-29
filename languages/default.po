@@ -1,0 +1,124 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2015-05-29 09:30-0700\n"
+"PO-Revision-Date: 2015-05-29 09:30-0700\n"
+"Last-Translator: Chris Klosowski <chris@filament-studios.com>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.1\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e;_x;_n\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: includes/EDD_SL_Plugin_Updater.php:176
+#, php-format
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">View version %3$s details</a>."
+msgstr ""
+
+#: includes/EDD_SL_Plugin_Updater.php:183
+#, php-format
+msgid ""
+"There is a new version of %1$s available. <a target=\"_blank\" class="
+"\"thickbox\" href=\"%2$s\">View version %3$s details</a> or <a href=\"%4$s"
+"\">update now</a>."
+msgstr ""
+
+#: includes/EDD_SL_Plugin_Updater.php:323
+msgid "You do not have permission to install plugin updates"
+msgstr ""
+
+#: includes/EDD_SL_Plugin_Updater.php:323
+msgid "Error"
+msgstr ""
+
+#: simple-notices-for-responseive.php:80
+msgid "Simple Notices"
+msgstr ""
+
+#: simple-notices-for-responseive.php:86
+msgid "Simple Notices for Responsive:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:97
+msgid "License Key"
+msgstr ""
+
+#: simple-notices-for-responseive.php:101
+msgid "active"
+msgstr ""
+
+#: simple-notices-for-responseive.php:108
+#: simple-notices-for-responseive.php:116
+msgid "Activate License"
+msgstr ""
+
+#: simple-notices-for-responseive.php:113
+msgid "Deactivate License"
+msgstr ""
+
+#: simple-notices-for-responseive.php:123
+msgid "Display:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:127
+msgid "On"
+msgstr ""
+
+#: simple-notices-for-responseive.php:128
+msgid "Off"
+msgstr ""
+
+#: simple-notices-for-responseive.php:129
+msgid "Date Range"
+msgstr ""
+
+#: simple-notices-for-responseive.php:135
+msgid "Start Date:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:146
+msgid "End Date:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:153
+msgid "Message:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:167
+msgid "Border Color:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:174
+msgid "Background Color:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:181
+msgid "Text Color:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:192
+msgid "Save Changes"
+msgstr ""
+
+#: simple-notices-for-responseive.php:198
+msgid "Preview:"
+msgstr ""
+
+#: simple-notices-for-responseive.php:223
+msgid "Please enter a start and end date"
+msgstr ""
+
+#: simple-notices-for-responseive.php:224
+msgid "Start Date must be before End Date"
+msgstr ""
+
+#: simple-notices-for-responseive.php:225
+msgid "You have unsaved changes"
+msgstr ""
