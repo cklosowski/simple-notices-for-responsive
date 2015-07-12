@@ -46,7 +46,9 @@ class Simple_Notices_for_Responsive {
 	}
 
 	private function includes() {
-		require SNFR_PLUGIN_DIR . 'includes/EDD_SL_Plugin_Updater.php';
+		if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+			require SNFR_PLUGIN_DIR . 'includes/EDD_SL_Plugin_Updater.php';
+		}
 	}
 
 	private function actions() {
