@@ -70,7 +70,7 @@ class Simple_Notices_for_Responsive {
 		add_action( 'responsive_header_end', array( $this, 'add_notices' ) );
 
 		// Support for Storefront
-		add_action( 'storefront_before_content', array( $this, 'add_notices' ) );
+		add_action( 'storefront_content_top', array( $this, 'add_notices' ) );
 	}
 
 	public function load_textdomain() {

@@ -16,3 +16,9 @@
 	color: #0066cc;
 	cursor: pointer;
 }
+
+.woocommerce-active .col-full #snfr-notice {
+	width: 100%;
+	margin-top: 0px;
+	margin-bottom: 15px;
+}
