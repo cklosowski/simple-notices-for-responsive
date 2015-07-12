@@ -63,7 +63,12 @@ class Simple_Notices_for_Responsive {
 
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'init', array( $this, 'enqueue_styles_and_scripts' ) );
+
+		// Support for Responsive
 		add_action( 'responsive_header_end', array( $this, 'add_notices' ) );
+
+		// Support for Storefront
+		add_action( 'storefront_before_content', array( $this, 'add_notices' ) );
 	}
 
 	public function load_textdomain() {
